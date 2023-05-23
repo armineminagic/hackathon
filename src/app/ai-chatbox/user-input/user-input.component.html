@@ -1,0 +1,45 @@
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card chat-app">
+                <div class="chat">
+                    <div class="chat-history">
+                        <!-- on button click Add new ULL or ADD NEW div with two li(req/resp)-->
+                        <ul class="m-b-0">
+                            <!-- Binding INPUT BOX DATA -->
+                            <li class="clearfix">
+                                <div class="message-data">
+                                    <span class="message-data-time">{{date | date: "shortTime"}}</span>
+                                </div>
+                                <div class="message other-message float-right"> {{sentMessage}} </div>
+                            </li>
+                            <!-- Binding RESPONSE BOX DATA -->
+                            <li class="clearfix">
+                                <div class="message-data">
+                                    <span class="message-data-time">{{date | date: "shortTime"}}</span>
+                                </div>
+                                <div class="message my-message">
+                                    <ul  *ngFor="let i of res?.confidences_sorted">
+                                        <li>{{i}}</li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="chat-message clearfix">
+                        <div class="input-group mb-0">
+                            <!-- submit text and logic  -->
+                            <!-- <div class="input-group-prepend"> -->
+                                <button class="button-primary" [disabled]="!message.length"><i class="fa fa-send" (click)="sendMessage()"></i></button>
+                            <!-- </div> -->
+                            <!-- Read from text box -->
+                            <input type="text" class="form-control" [(ngModel)]="message" placeholder="Enter message here...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
