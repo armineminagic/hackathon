@@ -1,41 +1,34 @@
 import { Component } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { ChatService } from 'src/app/services/chat.service';
-import { DatePipe } from '@angular/common';
-import { Root } from 'src/app/models/ResponseModel';
-import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-user-input',
   templateUrl: './user-input.component.html',
-  styleUrls: ['./user-input.component.css']
+  styleUrls: ['./user-input.component.css'],
+  providers: [ ChatService ]
 })
 export class UserInputComponent {
 
   constructor(private chatService: ChatService) {}
 
-  message: String = "";
+  message: string = "";
   sentMessage: String = "";
-  res: Root | undefined;
-  date = new Date();
+  messageStatus: String = "Hi, how can I help you?";
+  answer: string = '';
+  sentDate = new Date();
+  reciveDate: Date = new Date();
 
-  async sendMessage() : Promise<void> {
-    this.date = new Date();
-    this.res = undefined;
+  async sendMessage() {
     this.sentMessage = this.message;
-    var param: any;
-    if (this.message) {
-      this.chatService.sendMessage(this.message).subscribe(data => {
-        const tmp: any = data;
-        this.res = JSON.parse(JSON.stringify(tmp));
-        console.log(this.res);
-      });
-      console.log(this.res);
-      this.date = new Date();
-    } else {
-      console.log("Message doesn't contain any text.");
-    }
-    // console.log(response)
+    this.sentDate = new Date();
+    this.messageStatus = "Typing...";
+    this.answer = "";
+    const resp = await this.chatService.sendMessage(this.message);
+    resp?.on("output", (output: {text: string; data: string}) => {
+      this.reciveDate = new Date();
+      this.answer = output.text;
+      this.messageStatus = "Do you have any other question?";
+      this.message = "";
+    })
   }
-
 }
